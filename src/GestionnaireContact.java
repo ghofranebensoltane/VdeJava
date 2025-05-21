@@ -1,103 +1,137 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 public class GestionnaireContact {
 	
 	private List<Contact> contacts; 
+	
 	String filePath = "C:\\Users\\Asus\\Documents\\contacts.txt";  
+	private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=VDE;encrypt=false;";
+    private static final String USER = "sa";
+    private static final String PASSWORD = "123456";
 
 	public GestionnaireContact () {
 		contacts = new ArrayList<Contact>();
 	}
 	 
-	public void ajouterContact(Contact contact) {
-		contacts.add(contact);
-	}
 	
-	public void afficherContact(){
-		/*
-		 * for (Contact contact : listContact) { System.out.println(contact);}
-		 */
-		
-		contacts.stream().forEach(contact -> {
-			System.out.println(contact);
-		});
-	}
 	
-	public List<Contact> rechercherContact(List<Contact> listContact, String nom) {
-		return listContact.stream().filter(contact -> contact.getNom().equalsIgnoreCase(nom)).toList();
-	}
-	
-/*	List<Contact> c = new ArrayList<Contact>();
-        for (Contact contact : listContact) {
-        	if (nom.equals(contact.getNom())) {
-             c.add(contact);
-        	}
-				return c; 
-				break;
-				}
-	}
-*/
-  public boolean  modifierContact(String nomRecherche, Contact nouveauContact) {
-	  for (Contact contact : contacts) {
-		if (contact.getNom().equalsIgnoreCase(nomRecherche)) {
-			contact.setNom(nouveauContact.getNom());
-			contact.setPrenom(nouveauContact.getPrenom());
-			contact.setEmail(nouveauContact.getEmail());
-			contact.setTelephone(nouveauContact.getTelephone());
-			return true; 
-		}
-	  }
-		return false;  
-  }
-  
-  public void supprimerContact(String nomRecherche) {
-	contacts.removeIf(contact ->contact.getNom().equalsIgnoreCase(nomRecherche));
-  }
- 
-  public void sauvegarderContacts(){
-	  try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-	  contacts.stream().map(contact-> contact.getNom() + "," + contact.getPrenom() + "," + contact.getEmail() + "," + contact.getTelephone())
-	  .forEach(contact ->{ 
-	  try  { writer.write(contact);
-	         writer.newLine();
-	        } catch (IOException e) {
-	            System.err.println("Erreur d'écriture dans le fichier : " + e.getMessage());
+public void ajouterContact(Contact contact) {
+	String sql = "INSERT INTO Contact (nom, prenom, email, telephone) VALUES (?, ?, ?, ?)";
+
+	     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+	            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	            ps.setString(1, contact.getNom());
+	            ps.setString(2, contact.getPrenom());
+	            ps.setString(3, contact.getEmail());
+	            ps.setInt(4, contact.getTelephone());
+
+	            int rows = ps.executeUpdate();
+
+	            if (rows > 0) {
+	                System.out.println("Contact ajouté avec succès !");
+	            }
+
+	        } catch (SQLException e) {
+	            System.out.println("Erreur lors de l'ajout du contact : " + e.getMessage());
 	        }
-	  });
-	  System.out.println("Contacts sauvegardés dans contact.txt");
-	    } catch (IOException e) {
-	        System.err.println("Erreur lors de l'ouverture du fichier : " + e.getMessage());
-	    } 
-  }
+	    }
+	
+	
+	public void afficherContactsFromDB() {
+	    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+	         Statement stmt = conn.createStatement();
+	         ResultSet rs = stmt.executeQuery("SELECT * FROM Contact")) {
 
+	        while (rs.next()) {
+	            String nom = rs.getString("nom");
+	            String prenom = rs.getString("prenom");
+	            String email = rs.getString("email");
+	            int telephone = rs.getInt("telephone");
+
+	            System.out.println("nom: " + nom + ", prenom: " + prenom + ", email: " + email + ", telephone: " + telephone);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Erreur d'affichage : " + e.getMessage());
+	    }
+	}
+	
+		
+	
+	public boolean modifierContact(String nomRecherche, Contact nouveauContact) {
+	    String sql = "UPDATE Contact SET nom = ?, prenom = ?, email = ?, telephone = ? WHERE nom = ?";
+
+	    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, nouveauContact.getNom());
+	        stmt.setString(2, nouveauContact.getPrenom());
+	        stmt.setString(3, nouveauContact.getEmail());
+	        stmt.setInt(4, nouveauContact.getTelephone());
+	        stmt.setString(5, nomRecherche);
+
+	        int lignesAffectees = stmt.executeUpdate();
+
+	        return lignesAffectees > 0;
+
+	    } catch (SQLException e) {
+	        System.err.println("Erreur lors de la modification : " + e.getMessage());
+	        return false;
+	    }
+	}
   
-  public void chargerContacts() { 
-	  
-      String line;
+  
+  
+  public boolean supprimerContact(String nomRecherche) {
+	    String sql = "DELETE FROM Contact WHERE nom = ?";
 
-      try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-          while ((line = reader.readLine()) != null) {
-              String[] infos = line.split(",");
+	    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-              if (infos.length == 4) {
-                  String nom = infos[0].trim();      
-                  String prenom = infos[1].trim();
-                  String email = infos[2].trim();
-                  int telephone = Integer.parseInt(infos[3].trim());
-                  Contact c = new Contact(nom, prenom, email, telephone);
-                  contacts.add(c);
-              }
-          }
-      } catch (IOException e) {
-          System.out.println("Erreur de lecture du fichier : " + e.getMessage());
-      } catch (NumberFormatException e) {
-          System.out.println("Erreur de conversion du numéro de téléphone : " + e.getMessage());
-      }
-  }
+	        stmt.setString(1, nomRecherche); 
+	        int lignesAffectees = stmt.executeUpdate(); 
+
+	        return lignesAffectees > 0; 
+
+	    } catch (SQLException e) {
+	        System.err.println("Erreur lors de la suppression : " + e.getMessage());
+	        return false;
+	    }
+	}
+ 
+  
+	
+  public List<Contact> rechercherContact(String nomRecherche) {
+	    List<Contact> resultats = new ArrayList<>();
+	    String sql = "SELECT * FROM Contact WHERE nom = ?";
+
+	    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, nomRecherche);
+	        ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()) {
+	            String nom = rs.getString("nom");
+	            String prenom = rs.getString("prenom");
+	            String email = rs.getString("email");
+	            int telephone = rs.getInt("telephone");
+	            Contact c = new Contact(nom, prenom, email, telephone);
+	            resultats.add(c);
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.println("Erreur lors de la recherche : " + e.getMessage());
+	    }
+	    return resultats;
+	}
+
+
 }

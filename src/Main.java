@@ -1,48 +1,46 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Main {
    public static void main(String[] args) {
 	   GestionnaireContact gestionnaire = new GestionnaireContact();
 	   
-	   gestionnaire.chargerContacts();
-	   
-	  // Contact c1 = new Contact("ghofrane", "bensoltane", "ghof.bensoltane@gmail.com", 56702502);
-	  // Contact c2 = new Contact("kenet", "Durand", "kenet.durand@gmail.com", 2569686);
-      // Contact c3 = new Contact("ngala", "ngala", "ngala.ngala@gmail.com", 669696969);
-      
+	   String url = "jdbc:sqlserver://localhost:1433;databaseName=VDE;encrypt=false;";
+       String user = "sa"; 
+       String password = "123456"; 
 
+       try {
+           Connection conn = DriverManager.getConnection(url, user, password);
+           System.out.println("✅ Connexion réussie à la base de données !");
+           conn.close();
+       } catch (SQLException e) {
+           System.out.println("❌ Erreur de connexion : " + e.getMessage());
+       }
        
-       // gestionnaire.ajouterContact(c1);
-      //  gestionnaire.ajouterContact(c2);
-      //  gestionnaire.ajouterContact(c3);
-        
-      //  gestionnaire.sauvegarderContacts();
+    /*   Contact nouveauContact1 = new Contact("ghof", "bensoltane", "ghof.bensoltane@gmail.com", 56702402);
+       Contact nouveauContact2 = new Contact ("kenet","kenet","kenet.kenet@gamil.com",52406852);	
+       Contact nouveauContact3 = new Contact ("klein","jean","klein.jean@gmail.com",25841596);
+       gestionnaire.ajouterContact(nouveauContact1);
+       gestionnaire.ajouterContact(nouveauContact2);
+       gestionnaire.ajouterContact(nouveauContact3);
+       */
+      // gestionnaire.afficherContactsFromDB();
        
-      // gestionnaire.chargerContacts();
+      /* Contact modificationNouveauContact2 = new Contact("kenet","ngala","kenet.ngala@gmail.com",52406000);
+       gestionnaire.modifierContact("kenet", modificationNouveauContact2);*/
        
-       System.out.println("Contacts chargés depuis le fichier :");
-       gestionnaire.afficherContact();
-      
-     //  Contact nouveau2 = new Contact("Sarah", "Lemoine", "sarah.lemoine@gmail.com", 11122333);
-      // gestionnaire.ajouterContact(nouveau2);
+       gestionnaire.supprimerContact("kenet");
        
-       //gestionnaire.sauvegarderContacts();
-       
-      // System.out.println("Liste des contacts :");
-      // gestionnaire.afficherContact();
-       
-       
-      // Contact nouveau = new Contact("ngala", "hello", "ngala.hello@gmail.com", 669696969);
-      // gestionnaire.modifierContact("ngala", nouveau);
-      
-     //  System.out.println("\nAprès modification :");
-      // gestionnaire.afficherContact();
-       
-      // gestionnaire.supprimerContact("ngala");
-       
-      // System.out.println("\nAprès suppression :");
-      // gestionnaire.afficherContact();
-       
-     //  gestionnaire.sauvegarderContacts();
-	   
    }
-}
+ }
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
