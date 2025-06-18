@@ -8,12 +8,13 @@ public class Main {
    public static void main(String[] args) {
 	   GestionnaireContact gestionnaire = new GestionnaireContact();
 	   GestionnaireEmploye gestionnaireEmploye = new GestionnaireEmploye(); 
-	   Employe e1=  new Employe("Alice", "Développeur", 3200);
+	   GestionnaireStock gesstionnaireStock = new GestionnaireStock(); 
+	  /* Employe e1=  new Employe("Alice", "Développeur", 3200);
 	   Employe e2 = new Employe("Bob", "Manager", 4500);
 	   Employe e3 = new Employe("Charlie", "Développeur", 3100);
 	   Employe e4 = new Employe("Diana", "RH", 2900);
-	   Employe e5 =  new Employe("Eve", "Développeur", 3300);
-
+	   Employe e5 =  new Employe("Eve", "Développeur", 3300);*/
+	   
 	   
 	   
 	   
@@ -31,21 +32,37 @@ public class Main {
            System.out.println("❌ Erreur de connexion : " + e.getMessage());
        }
    
-    gestionnaireEmploye.ajouterEmploye(e1);
+   /* gestionnaireEmploye.ajouterEmploye(e1);
     gestionnaireEmploye.ajouterEmploye(e2);
     gestionnaireEmploye.ajouterEmploye(e3);
     gestionnaireEmploye.ajouterEmploye(e4);
     gestionnaireEmploye.ajouterEmploye(e5);
    
      
-    // gestionnaireEmploye.afficheEmploye();
-    // gestionnaireEmploye.filterdeveloper();
-    // gestionnaireEmploye.trierParSalaire();
+    gestionnaireEmploye.afficheEmploye();
+    gestionnaireEmploye.filterdeveloper();
+    gestionnaireEmploye.trierParSalaire();
     gestionnaireEmploye.moyenne();
     gestionnaireEmploye.findEmployeByName("ghofrane"); 
     
-   gestionnaireEmploye.findEmployeByNameOrDefault("ghofrane");
-
+   gestionnaireEmploye.findEmployeByNameOrDefault("ghofrane");*/
+       
+      /* gesstionnaireStock.ajouterProduit(new Produit("Clavier", 29.99, 10));
+       gesstionnaireStock.ajouterProduit(new Produit("Souris", 19.99, 0));
+       gesstionnaireStock.ajouterProduit(new Produit("Écran", 199.99, 5));   
+       
+       gesstionnaireStock.getAllProduits();
+       
+    
+       gesstionnaireStock.FindByPrice(); 
+       gesstionnaireStock.sortedPrice();
+       gesstionnaireStock.findByName("ghof");
+       gesstionnaireStock.findByLetter("e");
+       gesstionnaireStock.chercherOuDefaut("ghof");
+       gesstionnaireStock.moyenneDesPrix();
+       gesstionnaireStock.auDessusDeLaMoyenne();*/
+       gesstionnaireStock.afficherAvecConsumer();
+       
    }
  }
 	   
