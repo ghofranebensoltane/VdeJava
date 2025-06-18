@@ -1,10 +1,23 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
    public static void main(String[] args) {
 	   GestionnaireContact gestionnaire = new GestionnaireContact();
+	   GestionnaireEmploye gestionnaireEmploye = new GestionnaireEmploye(); 
+	   Employe e1=  new Employe("Alice", "Développeur", 3200);
+	   Employe e2 = new Employe("Bob", "Manager", 4500);
+	   Employe e3 = new Employe("Charlie", "Développeur", 3100);
+	   Employe e4 = new Employe("Diana", "RH", 2900);
+	   Employe e5 =  new Employe("Eve", "Développeur", 3300);
+
+	   
+	   
+	   
+	   
 	   
 	   String url = "jdbc:sqlserver://localhost:1433;databaseName=VDE;encrypt=false;";
        String user = "sa"; 
@@ -17,21 +30,22 @@ public class Main {
        } catch (SQLException e) {
            System.out.println("❌ Erreur de connexion : " + e.getMessage());
        }
-       
-    /*   Contact nouveauContact1 = new Contact("ghof", "bensoltane", "ghof.bensoltane@gmail.com", 56702402);
-       Contact nouveauContact2 = new Contact ("kenet","kenet","kenet.kenet@gamil.com",52406852);	
-       Contact nouveauContact3 = new Contact ("klein","jean","klein.jean@gmail.com",25841596);
-       gestionnaire.ajouterContact(nouveauContact1);
-       gestionnaire.ajouterContact(nouveauContact2);
-       gestionnaire.ajouterContact(nouveauContact3);
-       */
-      // gestionnaire.afficherContactsFromDB();
-       
-      /* Contact modificationNouveauContact2 = new Contact("kenet","ngala","kenet.ngala@gmail.com",52406000);
-       gestionnaire.modifierContact("kenet", modificationNouveauContact2);*/
-       
-       gestionnaire.supprimerContact("kenet");
-       
+   
+    gestionnaireEmploye.ajouterEmploye(e1);
+    gestionnaireEmploye.ajouterEmploye(e2);
+    gestionnaireEmploye.ajouterEmploye(e3);
+    gestionnaireEmploye.ajouterEmploye(e4);
+    gestionnaireEmploye.ajouterEmploye(e5);
+   
+     
+    // gestionnaireEmploye.afficheEmploye();
+    // gestionnaireEmploye.filterdeveloper();
+    // gestionnaireEmploye.trierParSalaire();
+    gestionnaireEmploye.moyenne();
+    gestionnaireEmploye.findEmployeByName("ghofrane"); 
+    
+   gestionnaireEmploye.findEmployeByNameOrDefault("ghofrane");
+
    }
  }
 	   
