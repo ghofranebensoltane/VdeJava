@@ -1,6 +1,7 @@
 package com.example.FirstApplicationSpring.model;
 
 import com.example.FirstApplicationSpring.enums.Niveau;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,10 +28,10 @@ public class Equipe implements Serializable {
     @Column(name = "niveau")
     private Niveau niveau;
 
-    @OneToOne(mappedBy = "equipe")
+    @OneToOne(cascade = CascadeType.ALL)
     private DetailEquipe detailEquipe;
 
-
     @ManyToMany (mappedBy = "equipes")
+    @JsonIgnore
     private Set<Etudiant> etudiantSet;
 }

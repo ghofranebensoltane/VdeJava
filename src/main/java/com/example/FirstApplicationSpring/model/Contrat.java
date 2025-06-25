@@ -2,6 +2,7 @@ package com.example.FirstApplicationSpring.model;
 
 
 import com.example.FirstApplicationSpring.enums.Specialite;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Contrat implements Serializable {
     private Specialite specialite;
 
     @ManyToOne
+    @JsonIgnore
     private Etudiant etudiant;
 
 }

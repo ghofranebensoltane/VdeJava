@@ -1,5 +1,6 @@
 package com.example.FirstApplicationSpring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Departement implements Serializable {
     private String nomDepart;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "departement")
+    @JsonIgnore
     private Set<Etudiant> etudiants;
 
 }

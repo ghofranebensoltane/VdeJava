@@ -1,5 +1,6 @@
 package com.example.FirstApplicationSpring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,8 @@ public class DetailEquipe implements Serializable {
     @Column(name = "thematique")
     private String thematique;
 
-    @OneToOne
+    @OneToOne(mappedBy = "detailEquipe")
+    @JsonIgnore
     private Equipe equipe;
 }
 

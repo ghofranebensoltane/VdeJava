@@ -1,6 +1,7 @@
 package com.example.FirstApplicationSpring.model;
 
 import com.example.FirstApplicationSpring.enums.Option;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,11 +29,14 @@ public class Etudiant implements Serializable {
     private Option option;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "etudiant")
+    @JsonIgnore
     private Set<Contrat> contrats;
 
    @ManyToOne
+   @JsonIgnore
     private Departement departement;
 
    @ManyToMany(fetch = FetchType.LAZY)
+   @JsonIgnore
     private Set<Equipe> equipes;
 }
