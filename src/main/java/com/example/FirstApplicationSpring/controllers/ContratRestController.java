@@ -1,6 +1,7 @@
 package com.example.FirstApplicationSpring.controllers;
 
 
+import com.example.FirstApplicationSpring.dto.ContratDTO;
 import com.example.FirstApplicationSpring.model.Contrat;
 import com.example.FirstApplicationSpring.services.IContratService;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,13 @@ public class ContratRestController {
     @DeleteMapping("/delete/{idContrat}")
     public void removeContrat(@PathVariable int idContrat){
         iContratService.removeContrat(idContrat); ;
+    }
+    @PostMapping("/affecter")
+    public ContratDTO affectContratToEtudiant(@RequestBody Contrat c,@RequestParam String nomEtudiant ,@RequestParam String prenomEtudiant){
+       return iContratService.affectContratToEtudiant(c,nomEtudiant,prenomEtudiant);
+    }
+    @GetMapping("/check-contrats")
+    public String checkAndUpdateContratsExpirants() {
+         return iContratService.retrieveAndUpdateStatusContrat();
     }
 }

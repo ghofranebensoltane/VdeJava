@@ -47,7 +47,6 @@ public class EtudiantService implements IEtudiantService{
     @Override
     public void removeEtudiant(int idEtudiant) {
         etudiantRepository.deleteById(idEtudiant);
-
     }
 
     @Override
@@ -86,4 +85,11 @@ public class EtudiantService implements IEtudiantService{
         return nouveauEtudiant;
 
     }
+
+    @Override
+    public List<Etudiant> getEtudiantsByDepartement(int idDepartement) {
+        return List.of();
+    }
+
+
 }

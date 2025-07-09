@@ -13,4 +13,5 @@ public interface IEtudiantService {
     void removeEtudiant(int idEtudiant);
     public void assignEtudiantToDepartement (int idEtudiant, int idDepart) ;
     Etudiant addAndAssignEtudiantToEquipeAndContract(Etudiant e, int idContrat, int idEquipe);
+    List<Etudiant> getEtudiantsByDepartement (int idDepartement);
 }

@@ -56,9 +56,11 @@ public class EtudiantRestController {
 
     return iEtudiantService.addAndAssignEtudiantToEquipeAndContract(etudiant,idContrat,idEquipe);
 
-
-
    }
 
+    @GetMapping("/by-departement/{idDepartement}")
+    public List<Etudiant> getEtudiantsByDepartement(@RequestParam int idDepart) {
+      return  iEtudiantService.getEtudiantsByDepartement(idDepart);
+    }
 
 }
