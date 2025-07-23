@@ -4,6 +4,7 @@ package com.example.FirstApplicationSpring.controllers;
 import com.example.FirstApplicationSpring.model.Contrat;
 import com.example.FirstApplicationSpring.model.Etudiant;
 import com.example.FirstApplicationSpring.services.IContratService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.example.FirstApplicationSpring.services.IEtudiantService;
@@ -13,24 +14,27 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/etudiants")
+@SecurityRequirement(name = "bearerAuth")
 public class EtudiantRestController {
 
     private final IEtudiantService iEtudiantService;
-
 
     @GetMapping("/GetALL")
     public List<Etudiant> getAllEtudiants(){
         return iEtudiantService.getAllEtudiants();
     }
 
+
     @PostMapping("/add")
     public Etudiant addEtudiant(@RequestBody Etudiant e){
         return iEtudiantService.addEtudiant(e);
     }
+
     @PutMapping("/update")
     public Etudiant updateEtudiant(@RequestBody Etudiant e){
         return iEtudiantService.updateEtudiant(e);
     }
+
 
     @GetMapping("/getOne/{idEtudiant}")
     public Etudiant getEtudiant(@PathVariable int idEtudiant){
