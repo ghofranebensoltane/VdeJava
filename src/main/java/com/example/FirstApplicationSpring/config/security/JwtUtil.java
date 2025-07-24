@@ -28,9 +28,10 @@ public class JwtUtil {
         this.SECRET_KEY = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -55,7 +56,14 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
-
+    public String extractRole(String token) {
+        return (String) Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role");
+    }
 
     public boolean isTokenExpired(String token) {
         return Jwts.parserBuilder()

@@ -1,5 +1,6 @@
 package com.example.FirstApplicationSpring.config.security;
 
+import com.example.FirstApplicationSpring.model.User;
 import com.example.FirstApplicationSpring.services.TokenBlacklistService;
 import com.example.FirstApplicationSpring.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -65,18 +66,17 @@ public class JwtFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                String roleFromToken = jwtUtil.extractRole(token);
+                String roleFromUserDetails = ((User) userDetails).getRole();
+
+                if (jwtUtil.validateToken(token, userDetails) && roleFromToken.equals(roleFromUserDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
-        }
-
         filterChain.doFilter(request, response);
     }
 

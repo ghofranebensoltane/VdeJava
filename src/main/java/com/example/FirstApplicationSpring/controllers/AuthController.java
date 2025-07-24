@@ -4,6 +4,7 @@ package com.example.FirstApplicationSpring.controllers;
 import com.example.FirstApplicationSpring.config.security.JwtUtil;
 import com.example.FirstApplicationSpring.dto.AuthRequest;
 import com.example.FirstApplicationSpring.dto.AuthResponse;
+import com.example.FirstApplicationSpring.model.User;
 import com.example.FirstApplicationSpring.services.TokenBlacklistService;
 import com.example.FirstApplicationSpring.services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,8 +41,8 @@ public class AuthController {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
 
-
-        String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        String role = ((User) userDetails).getRole();
+        String jwt = jwtUtil.generateToken(userDetails.getUsername(), role);
         String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
 
         return new AuthResponse(jwt, refreshToken);
@@ -73,8 +74,9 @@ public class AuthController {
                 if (jwtUtil.isTokenExpired(refreshToken)) {
                     throw new RuntimeException("Refresh token expiré");
                 }
-
-                String newToken = jwtUtil.generateToken(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                String role = ((User) userDetails).getRole();
+                String newToken = jwtUtil.generateToken(username, role);
                 return new AuthResponse(newToken, refreshToken);
 
             } catch (Exception e) {

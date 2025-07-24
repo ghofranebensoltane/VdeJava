@@ -6,6 +6,7 @@ import com.example.FirstApplicationSpring.model.Etudiant;
 import com.example.FirstApplicationSpring.services.IContratService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.example.FirstApplicationSpring.services.IEtudiantService;
 
@@ -24,7 +25,7 @@ public class EtudiantRestController {
         return iEtudiantService.getAllEtudiants();
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public Etudiant addEtudiant(@RequestBody Etudiant e){
         return iEtudiantService.addEtudiant(e);
@@ -35,7 +36,7 @@ public class EtudiantRestController {
         return iEtudiantService.updateEtudiant(e);
     }
 
-
+   @PreAuthorize("hasRole('USER')")
     @GetMapping("/getOne/{idEtudiant}")
     public Etudiant getEtudiant(@PathVariable int idEtudiant){
         return iEtudiantService.getEtudiant(idEtudiant);
