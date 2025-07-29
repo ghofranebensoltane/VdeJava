@@ -1,14 +1,12 @@
 package com.example.FirstApplicationSpring.controllers;
 
 
-import com.example.FirstApplicationSpring.model.Contrat;
 import com.example.FirstApplicationSpring.model.Etudiant;
-import com.example.FirstApplicationSpring.services.IContratService;
+import com.example.FirstApplicationSpring.services.IEtudiantService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.example.FirstApplicationSpring.services.IEtudiantService;
 
 import java.util.List;
 

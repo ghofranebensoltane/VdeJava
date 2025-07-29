@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Builder
 public class Etudiant implements Serializable {
 
     @Id
